@@ -62,10 +62,14 @@ def joint_entropy(mem,file):
     #return H
 
 class Nodes:
-    def __init__(self, proba, right=None, left=None):
+    def __init__(self, proba, sym, right=None, left=None):
         self.right = right
         self.left = left
         self.probability = proba
+        self.sym = sym
+
+    #def get_proba(self):
+        #return self.probability
 
 proba_dict = joint_entropy(0,"cantrbry/alice29.txt")
 
@@ -84,11 +88,21 @@ test_dict = {}
 
 for key in proba_dict:
     print(key)
-    test_dict[key] = Nodes(proba_dict[key])
+    node = Nodes(proba_dict[key], key)
     #print(key.probability)
+    list.append(node)
 
-for key in test_dict:
-    print(key, "----->" , test_dict[key].probability)
+
+print(node.probability)
+
+list.sort(key=lambda p: p.probability)
+
+print("done")
+for i in range(len(list)):
+    print(list[i].probability)
+
+#for key in test_dict:
+    #print(key, "----->" , test_dict[key].probability)
 
 
 # sort dict???
@@ -100,3 +114,8 @@ for key in test_dict:
     #print(key.probability)
 
 
+
+
+#go throught list of nodes and find the two smallest values, add new node based on those values and append that node to the list
+
+# how do we ignore "used" nodes??? move all used nodes to new list???, put used nodes in the front of the list and push starting index for the for loop each time
