@@ -62,7 +62,7 @@ def joint_entropy(mem,file):
     #return H
 
 class Nodes:
-    def __init__(self, proba, sym, right=None, left=None):
+    def __init__(self, proba, sym, left=None, right=None):
         self.right = right
         self.left = left
         self.probability = proba
@@ -87,20 +87,38 @@ list = []
 test_dict = {}
 
 for key in proba_dict:
-    print(key)
+    #print(key)
     node = Nodes(proba_dict[key], key)
     #print(key.probability)
     list.append(node)
 
 
-print(node.probability)
+#print(node.probability)
 
 list.sort(key=lambda p: p.probability)
 
-print("done")
-for i in range(len(list)):
-    print(list[i].probability)
+#print(len(list))
+#for i in range(len(list)):
+#    print(list[i].probability)
 
+#print(list[0].probability)
+
+
+#create all other nodes from the inital leafs, n leafs = n-1 parent nodes
+for x in range(0,len(list)+len(list)-2,2): #0,len(list)-1,2
+
+    #print(x)
+
+    node = Nodes(list[x].probability + list[x+1].probability, None, list[x], list[x+1])
+    list.append(node)
+    list.sort(key=lambda p: p.probability)
+
+    #print(x)
+    #print(node.left.sym)
+    #print(node.probability)
+
+for i in range(10):
+    print(list[-1].probability)
 #for key in test_dict:
     #print(key, "----->" , test_dict[key].probability)
 
