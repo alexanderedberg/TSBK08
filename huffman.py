@@ -62,29 +62,20 @@ def joint_entropy(mem,file):
     #return H
 
 class Nodes:
-    def __init__(self, proba, sym, left=None, right=None):
+    def __init__(self, proba, sym, left=None, right=None, bit=None):
         self.right = right
         self.left = left
         self.probability = proba
         self.sym = sym
+        self.bit = bit
 
     #def get_proba(self):
         #return self.probability
 
 proba_dict = joint_entropy(0,"cantrbry/alice29.txt")
 
-"""
-node = Nodes(0.5)
-print(node.probability)
 
-node2 = Nodes(0.2)
-
-node3 = Nodes(node.probability+node.probability, node, node2)
-
-print(node3.right.probability)
-"""
 list = []
-test_dict = {}
 
 for key in proba_dict:
     #print(key)
@@ -97,14 +88,9 @@ for key in proba_dict:
 
 list.sort(key=lambda p: p.probability)
 
-#print(len(list))
-#for i in range(len(list)):
-#    print(list[i].probability)
-
-#print(list[0].probability)
 
 
-#create all other nodes from the inital leafs, n leafs = n-1 parent nodes
+#create all other nodes from the inital leafs, n leafs = n-1 parent nodes. 
 for x in range(0,len(list)+len(list)-2,2): #0,len(list)-1,2
 
     #print(x)
@@ -113,18 +99,18 @@ for x in range(0,len(list)+len(list)-2,2): #0,len(list)-1,2
     list.append(node)
     list.sort(key=lambda p: p.probability)
 
+    #Give left child 0 bit and right child 1
+    list[x].bit = 0 
+    list[x+1].bit = 1
+
     #print(x)
     #print(node.left.sym)
     #print(node.probability)
 
 for i in range(10):
-    print(list[-1].probability)
-#for key in test_dict:
-    #print(key, "----->" , test_dict[key].probability)
+    print(list[i].bit)
 
 
-# sort dict???
-# 
 
 
 #for key in proba_dict:
