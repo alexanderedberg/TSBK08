@@ -3,7 +3,7 @@ from collections import Counter
 
 
 
-#file = "cantrbry/alice29.txt"
+file = "cantrbry/alice29.txt"
 
 """
 with open(file,"rb") as f:
@@ -65,15 +65,15 @@ class Nodes:
             self.left.inorderTraversal(res)
         if self.sym != None:
             codeword_dict[self.sym] = res
-            print(self.sym)
-            print(res)
+            #print(codeword_dict[self.sym])
+            #print(res)
         if self.right:
             res += "1"
             self.right.inorderTraversal(res)
 
         #return res
 
-proba_dict = joint_entropy(0,"cantrbry/alice29.txt")
+proba_dict = joint_entropy(0,file) #"cantrbry/alice29.txt"
 
 codeword_dict = proba_dict
 
@@ -107,11 +107,60 @@ res=""
 node.inorderTraversal(res)
 
 
+#read the file one symbol at a time, use said symbol as key in codeword_dict and write the corresponding value to a new file? "thisfile_huffman.txt"
+
+#encode
+with open(file,"rb") as f:
+
+    o = open("demofile2.txt", "w")
+
+    while True:
+        char = f.read(1)
+        if not char:
+            #print("End of file")
+            break
+            #=codeword_dict[char]
+        o.write(codeword_dict[char])
+        #file_data = f.read(1)
+        #print(f.read(1))
+        #o = open("demofile2.txt", "a")
+        #o.write(codeword_dict[f.read(1)])
+        #o.close()
+        #print(file_data)
+        #print(codeword_dict[file_data])
+    o.close()
+
+"""
+    o = open("demofile2.txt", "r")
+    st = o.read()
+    o.close()
+
+    o = open("demofile2.txt", "w")
+    #print(st)    
+    o.write(' '.join(format(ord(x), 'b') for x in st))
+    o.close()
+"""
 
 
 
-print(codeword_dict)
+#decode
+file = "demofile2.txt"
+with open(file,"r") as o:
+
+    #nr_bits = len(o.read())
+    #print(nr_bits)
+    for i in o: #range(10): len(o.read()) range(22609)
+        #print(i)
+        #print()
+        print(o.read(2))
+        #print(file_data44)
+
+
+
+
+
+
+#print(codeword_dict)
 #for key in proba_dict:
     #print(len(proba_dict))
     #print(key.probability)
-
