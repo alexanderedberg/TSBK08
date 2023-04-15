@@ -3,20 +3,6 @@ from collections import Counter
 
 
 
-
-
-# Get probability distribution, same method as in entropy.py shouuld be fine
-# 
-# Sort probabilitys in array (use numpy) (use sort array and look in reverse ???? ([::-1]))
-# 
-# root node is 1
-# 
-# create leafs from each probability
-# 
-# add the sammelst leafs to create a new LEAF NODE/PARENT NODE, only the node with probability 1 is the root node
-#
-#
-
 #file = "cantrbry/alice29.txt"
 
 """
@@ -62,18 +48,34 @@ def joint_entropy(mem,file):
     #return H
 
 class Nodes:
-    def __init__(self, proba, sym, left=None, right=None, bit=None):
+    def __init__(self, proba, sym, left=None, right=None):
         self.right = right
         self.left = left
         self.probability = proba
         self.sym = sym
-        self.bit = bit
 
     #def get_proba(self):
         #return self.probability
 
+    
+    def inorderTraversal(self,res):
+        
+        if self.left:
+            res += "0"
+            self.left.inorderTraversal(res)
+        if self.sym != None:
+            codeword_dict[self.sym] = res
+            print(self.sym)
+            print(res)
+        if self.right:
+            res += "1"
+            self.right.inorderTraversal(res)
+
+        #return res
+
 proba_dict = joint_entropy(0,"cantrbry/alice29.txt")
 
+codeword_dict = proba_dict
 
 list = []
 
@@ -96,30 +98,20 @@ for x in range(0,len(list)+len(list)-2,2): #0,len(list)-1,2
     #print(x)
 
     node = Nodes(list[x].probability + list[x+1].probability, None, list[x], list[x+1])
+
     list.append(node)
     list.sort(key=lambda p: p.probability)
 
-    #Give left child 0 bit and right child 1
-    list[x].bit = 0 
-    list[x+1].bit = 1
-
-    #print(x)
-    #print(node.left.sym)
-    #print(node.probability)
-
-for i in range(10):
-    print(list[i].bit)
+    
+res=""
+node.inorderTraversal(res)
 
 
 
 
+
+print(codeword_dict)
 #for key in proba_dict:
     #print(len(proba_dict))
     #print(key.probability)
 
-
-
-
-#go throught list of nodes and find the two smallest values, add new node based on those values and append that node to the list
-
-# how do we ignore "used" nodes??? move all used nodes to new list???, put used nodes in the front of the list and push starting index for the for loop each time
