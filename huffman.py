@@ -107,12 +107,10 @@ res=""
 node.inorderTraversal(res)
 
 
-#read the file one symbol at a time, use said symbol as key in codeword_dict and write the corresponding value to a new file? "thisfile_huffman.txt"
-
 #encode
-with open(file,"rb") as f:
 
-    o = open("demofile2.txt", "w")
+#read each symbol and write it as its' codeword
+with open(file,"rb") as f , open("demofile2","w") as o:
 
     while True:
         char = f.read(1)
@@ -121,14 +119,25 @@ with open(file,"rb") as f:
             break
             #=codeword_dict[char]
         o.write(codeword_dict[char])
-        #file_data = f.read(1)
-        #print(f.read(1))
-        #o = open("demofile2.txt", "a")
-        #o.write(codeword_dict[f.read(1)])
-        #o.close()
-        #print(file_data)
-        #print(codeword_dict[file_data])
-    o.close()
+
+
+#pad the file with 0 so that the number of bits are divisible by 8
+with open("demofile2","r+") as o:
+
+    bitstream = o.read()
+    bitstream_len = len(bitstream)
+    #print(bitstream)
+    #print(bitstream_len)
+
+    while bitstream_len%8 != 0:
+        o.write("0")
+        bitstream += "0"
+        bitstream_len = len(bitstream)
+        
+    #print(bitstream_len)
+
+
+
 
 """
     o = open("demofile2.txt", "r")
