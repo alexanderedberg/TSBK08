@@ -122,7 +122,7 @@ with open(file,"rb") as f , open("demofile2","w") as o:
 
 
 #pad the file with 0 so that the number of bits are divisible by 8
-with open("demofile2","r+") as o:
+with open("demofile2","r+") as o, open("encodetest","wb") as output: 
 
     bitstream = o.read()
     bitstream_len = len(bitstream)
@@ -131,13 +131,33 @@ with open("demofile2","r+") as o:
 
     while bitstream_len%8 != 0:
         o.write("0")
-        bitstream += "0"
-        bitstream_len = len(bitstream)
-        
+        bitstream_len += 1
+
+            
     #print(bitstream_len)
+    #bitstream = o.read()
+    o.seek(0)
+    while True:
+        bits_8 = o.read(8)
+        #print(char)
+        if not bits_8:
+            #print("End of file")
+            break
+            #=codeword_dict[char]
+        
+        #print(bits_8)
+        print(int(bits_8,2))
+        to_int = int(bits_8,2)
+        #bytes(to_int)
+        output.write(bytes(bits_8,'ascii'))
 
 
 
+
+
+#for i in range (0,bitstream_len,8):
+
+    #print(bitstream[i])
 
 """
     o = open("demofile2.txt", "r")
@@ -150,6 +170,9 @@ with open("demofile2","r+") as o:
     o.close()
 """
 
+#print(bin(to_int))
+#print(format(to_int, 'b')) #use this later to convert from int to bin
+#print(int(bin(to_int),2))
 
 
 #decode
