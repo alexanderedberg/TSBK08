@@ -57,26 +57,42 @@ class Nodes:
     #def get_proba(self):
         #return self.probability
 
-    
+
+
     def inorderTraversal(self,res):
-        
+        res = res[:-1]
+
         if self.left:
+            print("left")
             res += "0"
             self.left.inorderTraversal(res)
+
         if self.sym != None:
+            print(res)
             codeword_dict[self.sym] = res
+            #print(res[-1])
+            #res = res[:-1]
+            #res = res.rstrip(res[-1])
             #print(codeword_dict[self.sym])
             #print(res)
+
         if self.right:
+            print("right")
             res += "1"
             self.right.inorderTraversal(res)
 
+        #res = res[:-1]
+        #print(res)
+        print("HEJHEJ")
         #return res
+
+
+
 
 proba_dict = joint_entropy(0,file) #"cantrbry/alice29.txt"
 
 codeword_dict = proba_dict
-print(proba_dict)
+#print(proba_dict)
 list = []
 
 for key in proba_dict:
@@ -105,6 +121,7 @@ for x in range(0,len(list)+len(list)-2,2): #0,len(list)-1,2
     
 res=""
 node.inorderTraversal(res)
+#print(hubhub)
 
 
 #encode
@@ -156,7 +173,7 @@ with open("demofile2","r+") as o, open("encodetest","wb") as output:
     #print(bytearray)
     output.write(bytearray) #bytes(bits_8,'ascii') to_str.encode()
 
-print(proba_dict)
+#print(proba_dict)
 #print(codeword_dict)
 
 
