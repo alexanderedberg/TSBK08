@@ -3,7 +3,7 @@ from collections import Counter
 
 
 
-file = "cantrbry/alice29.txt"
+file = "cantrbry/alice29.txt" #asyoulik.txt #cantrbry #bible.txt #E.coli
 
 """
 with open(file,"rb") as f:
@@ -76,7 +76,7 @@ class Nodes:
 proba_dict = joint_entropy(0,file) #"cantrbry/alice29.txt"
 
 codeword_dict = proba_dict
-
+print(proba_dict)
 list = []
 
 for key in proba_dict:
@@ -137,6 +137,7 @@ with open("demofile2","r+") as o, open("encodetest","wb") as output:
     #print(bitstream_len)
     #bitstream = o.read()
     o.seek(0)
+    bytearray = bytearray()
     while True:
         bits_8 = o.read(8)
         #print(char)
@@ -146,10 +147,17 @@ with open("demofile2","r+") as o, open("encodetest","wb") as output:
             #=codeword_dict[char]
         
         #print(bits_8)
-        print(int(bits_8,2))
+        #print(int(bits_8,2))
         to_int = int(bits_8,2)
+        bytearray.append(to_int)
+        #to_str = str(to_int)
         #bytes(to_int)
-        output.write(bytes(bits_8,'ascii'))
+    
+    #print(bytearray)
+    output.write(bytearray) #bytes(bits_8,'ascii') to_str.encode()
+
+print(proba_dict)
+#print(codeword_dict)
 
 
 
