@@ -3,7 +3,7 @@ from collections import Counter
 
 
 
-file = "cantrbry/alice29.txt" #asyoulik.txt #cantrbry #bible.txt #E.coli
+file = "cantrbry/alice29.txt" #asyoulik.txt #cantrbry #bible.txt #E.coli #alice29.txt
 
 """
 with open(file,"rb") as f:
@@ -37,15 +37,8 @@ def joint_entropy(mem,file):
             p[key] = freq[key]/(nr_symbols-mem)
 
 
-        #print(p)
         return p
-    #Calculate H(Xn,.......,Xn+k)
-    #H = 0
-    #for key in p:    
-    #    H += p[key]*math.log2(p[key])*-1
 
-    #print(H)
-    #return H
 
 class Nodes:
     def __init__(self, proba, sym, left=None, right=None):
@@ -53,10 +46,6 @@ class Nodes:
         self.left = left
         self.probability = proba
         self.sym = sym
-
-    #def get_proba(self):
-        #return self.probability
-
 
 
     def inorderTraversal(self,res):
@@ -68,7 +57,7 @@ class Nodes:
             res = res[:-1]
 
         if self.sym is not None:
-            print(res)
+            #print(res)
             codeword_dict[self.sym] = res
 
         if self.right:
@@ -80,41 +69,35 @@ class Nodes:
 
 
 
-
 proba_dict = joint_entropy(0,file) #"cantrbry/alice29.txt"
 
 codeword_dict = proba_dict
-#print(proba_dict)
 list = []
 
+#Create the leafs from the dictionary
 for key in proba_dict:
-    #print(key)
     node = Nodes(proba_dict[key], key)
-    #print(key.probability)
     list.append(node)
 
 
-#print(node.probability)
-
 list.sort(key=lambda p: p.probability)
 
-
-
-#create all other nodes from the inital leafs, n leafs = n-1 parent nodes. 
+#Create all other nodes from the inital leafs, n leafs = n-1 parent nodes. 
 for x in range(0,len(list)+len(list)-2,2): #0,len(list)-1,2
-
-    #print(x)
 
     node = Nodes(list[x].probability + list[x+1].probability, None, list[x], list[x+1])
 
     list.append(node)
     list.sort(key=lambda p: p.probability)
 
-   
+
+#print(node.probability)
+
+#Traverse the huffman tree and get the codewords for each symbol
 res=""
 node.inorderTraversal(res)
-#print(hubhub)
 
+#print(proba_dict)
 
 #encode
 
@@ -126,45 +109,39 @@ with open(file,"rb") as f , open("demofile2","w") as o:
         if not char:
             #print("End of file")
             break
-            #=codeword_dict[char]
+        
         o.write(codeword_dict[char])
 
 
-#pad the file with 0 so that the number of bits are divisible by 8
+#pad the file with 0 so that the number of bits are divisible by 8, after that read the file with 8bits at a time, convert the 8bit representation to an int and then
+#convert that to byte and write.
 with open("demofile2","r+") as o, open("encodetest","wb") as output: 
 
     bitstream = o.read()
     bitstream_len = len(bitstream)
-    #print(bitstream)
-    #print(bitstream_len)
 
+    #pad with 0's
     while bitstream_len%8 != 0:
         o.write("0")
         bitstream_len += 1
 
             
-    #print(bitstream_len)
-    #bitstream = o.read()
+    #Start reading 8bits at a time
     o.seek(0)
     bytearray = bytearray()
     while True:
         bits_8 = o.read(8)
-        #print(char)
+
         if not bits_8:
-            #print("End of file")
             break
-            #=codeword_dict[char]
         
-        #print(bits_8)
-        #print(int(bits_8,2))
         to_int = int(bits_8,2)
+        #print()
         bytearray.append(to_int)
-        #to_str = str(to_int)
-        #bytes(to_int)
     
     #print(bytearray)
-    output.write(bytearray) #bytes(bits_8,'ascii') to_str.encode()
-
+    output.write(bytearray)
+#print(to_int)
 #print(proba_dict)
 #print(codeword_dict)
 
@@ -172,44 +149,21 @@ with open("demofile2","r+") as o, open("encodetest","wb") as output:
 
 
 
-#for i in range (0,bitstream_len,8):
-
-    #print(bitstream[i])
-
-"""
-    o = open("demofile2.txt", "r")
-    st = o.read()
-    o.close()
-
-    o = open("demofile2.txt", "w")
-    #print(st)    
-    o.write(' '.join(format(ord(x), 'b') for x in st))
-    o.close()
-"""
-
-#print(bin(to_int))
-#print(format(to_int, 'b')) #use this later to convert from int to bin
-#print(int(bin(to_int),2))
-
 
 #decode
-file = "demofile2.txt"
-with open(file,"r") as o:
+file = "encodetest"
+with open(file,"rb") as f:
 
-    #nr_bits = len(o.read())
-    #print(nr_bits)
-    for i in o: #range(10): len(o.read()) range(22609)
-        #print(i)
-        #print()
-        print(o.read(2))
-        #print(file_data44)
+    #while True:
+    char = f.read(1)
+    #    if not char:
+    #        break
 
 
 
 
+print('{0:08b}'.format(int.from_bytes(char, "big"))) #do this in loop and write to a file, then remove the padding (how do we know how much padding there is?), 
+                                                     #then read and use the dict in reverse??
 
 
-#print(codeword_dict)
-#for key in proba_dict:
-    #print(len(proba_dict))
-    #print(key.probability)
+        
