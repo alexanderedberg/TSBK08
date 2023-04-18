@@ -60,31 +60,23 @@ class Nodes:
 
 
     def inorderTraversal(self,res):
-        res = res[:-1]
 
         if self.left:
-            print("left")
+            #print("left")
             res += "0"
             self.left.inorderTraversal(res)
+            res = res[:-1]
 
-        if self.sym != None:
+        if self.sym is not None:
             print(res)
             codeword_dict[self.sym] = res
-            #print(res[-1])
-            #res = res[:-1]
-            #res = res.rstrip(res[-1])
-            #print(codeword_dict[self.sym])
-            #print(res)
 
         if self.right:
-            print("right")
+            #print("right")
             res += "1"
             self.right.inorderTraversal(res)
+            res = res[:-1]
 
-        #res = res[:-1]
-        #print(res)
-        print("HEJHEJ")
-        #return res
 
 
 
@@ -118,7 +110,7 @@ for x in range(0,len(list)+len(list)-2,2): #0,len(list)-1,2
     list.append(node)
     list.sort(key=lambda p: p.probability)
 
-    
+   
 res=""
 node.inorderTraversal(res)
 #print(hubhub)
