@@ -3,7 +3,7 @@ from collections import Counter
 
 
 
-file = "cantrbry/alice29.txt" #asyoulik.txt #cantrbry #bible.txt #E.coli #alice29.txt
+file = "cantrbry/asyoulik.txt" #asyoulik.txt #cantrbry #bible.txt #E.coli #alice29.txt
 
 """
 with open(file,"rb") as f:
@@ -66,6 +66,29 @@ class Nodes:
             self.right.inorderTraversal(res)
             res = res[:-1]
 
+    def decode_huffman(self, root, file):
+
+        with open(file,"r") as f , open("beepboop","wb") as o:
+            
+            while True:
+                char = f.read(1)
+                #print(char)
+                if not char:
+                    break
+
+                if self.sym is not None:
+                    #write symbol to file
+                    #start over at the root
+                    o.write(self.sym)
+                    self = root
+
+                if char == "0":
+                    self = self.left
+                    
+
+                if char == "1":
+                    self = self.right
+
 
 
 
@@ -95,7 +118,7 @@ for x in range(0,len(list)+len(list)-2,2): #0,len(list)-1,2
 
 #Traverse the huffman tree and get the codewords for each symbol
 res=""
-node.inorderTraversal(res)
+node.inorderTraversal(res) #This is the last node created, so the root node with probability 1
 
 #print(proba_dict)
 
@@ -123,6 +146,7 @@ with open("demofile2","r+") as o, open("encodetest","wb") as output:
     #pad with 0's
     while bitstream_len%8 != 0:
         o.write("0")
+        print("pad")
         bitstream_len += 1
 
             
@@ -152,14 +176,18 @@ with open("demofile2","r+") as o, open("encodetest","wb") as output:
 
 #decode
 file = "encodetest"
-with open(file,"rb") as f:
+with open(file,"rb") as f , open("decodetest","w") as o:
 
-    #while True:
-    char = f.read(1)
-    #    if not char:
-    #        break
+    #read each byte, convert to binary and write to new file
+    while True:
+        char = f.read(1)
+        if not char:
+            break
+        
+        o.write('{0:08b}'.format(int.from_bytes(char, "big")))
 
-
+    
+node.decode_huffman(node,"decodetest")
 
 
 print('{0:08b}'.format(int.from_bytes(char, "big"))) #do this in loop and write to a file, then remove the padding (how do we know how much padding there is?), 
