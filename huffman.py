@@ -154,22 +154,12 @@ with open("temp","r+") as o, open(file + "_compressed","wb") as output:
             break
         
         to_int = int(bits_8,2)
-        #print()
         bytearray.append(to_int)
     
-    #print(bytearray)
     output.write(bytearray)
-#print(to_int)
-#print(proba_dict)
-#print(codeword_dict)
-
-
-
-
 
 
 #decode
-#file = "encodetest"
 with open(file + "_compressed","rb") as f , open("binary","w") as o:
 
     #read each byte, convert to binary and write to new file
@@ -187,13 +177,8 @@ with open(file + "_compressed","rb") as f , open("binary","w") as o:
     #o.write('{0:08b}'.format(int.from_bytes(char, "big")))
 
 
-
-
 node.decode_huffman(node,"binary")
 
-
-#print('{0:08b}'.format(int.from_bytes(char, "big"))) #do this in loop and write to a file, then remove the padding (how do we know how much padding there is?), 
-                                                     #then read and use the dict in reverse??
 
 
         
