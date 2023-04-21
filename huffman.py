@@ -1,4 +1,5 @@
 from collections import Counter
+import os
 
 
 def joint_entropy(mem,file):
@@ -56,12 +57,9 @@ class Nodes:
             res = res[:-1]
 
     def decode_huffman(self, root, bin):
-        #file = file[:-5]
-        with open(bin,"r") as f , open(file + "_decompressed","wb") as o:
-            #f = f[:-5]
+        with open(bin,"r") as f , open("decompress/" + file + "_decompressed","wb") as o:
             while True:
                 char = f.read(1)
-                #print(char)
                 if not char:
                     break
 
@@ -78,10 +76,11 @@ class Nodes:
                 if char == "1":
                     self = self.right
 
-
-file = "cantrbry/alice29.txt" #asyoulik.txt #cantrbry #bible.txt #E.coli #alice29.txt
-
-proba_dict = joint_entropy(0,file) #"cantrbry/alice29.txt"
+#Loop through all the files, just change to the correct dir and do not forget to change the variable dir aswell
+#for file in os.listdir("cantrbry"): #cantrbry large
+dir = "cantrbry/"
+file = "alice29.txt"
+proba_dict = joint_entropy(0,dir+file) #"cantrbry/alice29.txt"
 
 codeword_dict = proba_dict
 list = []
@@ -95,7 +94,7 @@ for key in proba_dict:
 list.sort(key=lambda p: p.probability)
 
 #Create all other nodes from the inital leafs, n leafs = n-1 parent nodes. 
-for x in range(0,len(list)+len(list)-2,2): #0,len(list)-1,2
+for x in range(0,len(list)+len(list)-2,2):
 
     node = Nodes(list[x].probability + list[x+1].probability, None, list[x], list[x+1])
 
@@ -103,25 +102,18 @@ for x in range(0,len(list)+len(list)-2,2): #0,len(list)-1,2
     list.sort(key=lambda p: p.probability)
 
 
-#print(node.probability)
-
 #Traverse the huffman tree and get the codewords for each symbol
 res=""
 node.inorderTraversal(res) #This is the last node created, so the root node with probability 1
 
-#print(proba_dict)
 
 #encode
-
 #read each symbol and write it as its' codeword
-with open(file,"rb") as f , open("temp","w") as o:
+with open(dir+file,"rb") as f , open("temp","w") as o:
 
     while True:
         char = f.read(1)
-        #print(char)
         if not char:
-            #print("End of file")
-            #print(char)
             break
         
         o.write(codeword_dict[char])
@@ -132,7 +124,7 @@ with open(file,"rb") as f , open("temp","w") as o:
 
 #pad the file with 0 so that the number of bits are divisible by 8, after that read the file with 8bits at a time, convert the 8bit representation to an int and then
 #convert that to byte and write.
-with open("temp","r+") as o, open(file + "_compressed","wb") as output: 
+with open("temp","r+") as o, open("compress/" + file + "_compressed","wb") as output: 
 
     bitstream = o.read()
     bitstream_len = len(bitstream)
@@ -146,7 +138,7 @@ with open("temp","r+") as o, open(file + "_compressed","wb") as output:
             
     #Start reading 8bits at a time
     o.seek(0)
-    bytearray = bytearray()
+    byte_array = bytearray()
     while True:
         bits_8 = o.read(8)
 
@@ -154,13 +146,14 @@ with open("temp","r+") as o, open(file + "_compressed","wb") as output:
             break
         
         to_int = int(bits_8,2)
-        bytearray.append(to_int)
+        byte_array.append(to_int)
     
-    output.write(bytearray)
+    output.write(byte_array)
+
 
 
 #decode
-with open(file + "_compressed","rb") as f , open("binary","w") as o:
+with open("compress/" + file + "_compressed","rb") as f , open("binary","w") as o:
 
     #read each byte, convert to binary and write to new file
     string = ""
