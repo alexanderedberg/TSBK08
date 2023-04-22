@@ -180,3 +180,10 @@ for file in os.listdir(dir[:-1]):
 
     node.decode_huffman(node,"binary")
 
+    print("File: " + file)
+    print("Original: " + str(os.path.getsize(dir+file)) + " bytes")
+    print("Compressed: " + str(os.path.getsize("compress/" + file + "_compressed")) + " bytes")
+    ratio = os.path.getsize("compress/" + file + "_compressed")/os.path.getsize(dir+file)
+    print("Compression ratio: " + str(ratio))
+    print("-----------------------------------------------------------------------------------------")
+

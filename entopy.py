@@ -40,25 +40,27 @@ def joint_entropy(mem,file):
 
 def calc(mem,filename):
     Entropy_joint = []
-    for mem in range (0,mem):
+    for mem in range (0,mem+1):
         Entropy_joint.append(joint_entropy(mem,filename))
 
     Entropy_conditional = []
-    for i in range (0,mem-1):
+    for i in range (0,mem): #for i in range (0,mem-1)
         Entropy_conditional.append(Entropy_joint[i+1]-Entropy_joint[i])
 
 
     print(filename)
     print("Memory (i) \t", "Entropy H(X_n, X_n+1,.....,X_n+i) \t", "Entropy H(X_n|X_n-1,.....,X_n-i)")
     #print("")
-    for i in range(0,mem):
+    for i in range(0,mem+1):
         print("\t{} \t {} \t \t \t {}".format(i, Entropy_joint[i], Entropy_conditional[i-1] if i>0  else Entropy_joint[i]))
         #print(i, Entropy_joint[i], Entropy_conditional[i-1])
-    print("")
+    #print("")
+    print("------------------------------------------------------------------------------------------------------------------------------------------------")
 
 #----------------------------------------------------
 
-mem = 4
+mem = 0 #Choose memory for the entropy
+
 #loop runt alla filer
 for filename in os.listdir("cantrbry"):
     calc(mem,"cantrbry/" + filename)
