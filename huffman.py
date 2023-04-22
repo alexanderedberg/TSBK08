@@ -57,10 +57,12 @@ class Nodes:
             res = res[:-1]
 
     def decode_huffman(self, root, bin):
+        
         with open(bin,"r") as f , open("decompress/" + file + "_decompressed","wb") as o:
             while True:
                 char = f.read(1)
                 if not char:
+                    o.write(self.sym) #needed so that last symbol is written
                     break
 
                 if self.sym is not None:
@@ -76,11 +78,11 @@ class Nodes:
                 if char == "1":
                     self = self.right
 
-#Loop through all the files, just change to the correct dir and do not forget to change the variable dir aswell
-for file in os.listdir("cantrbry"): #cantrbry large
-    dir = "cantrbry/"
-    #file = "asyoulik.txt"
-    proba_dict = joint_entropy(0,dir+file) #"cantrbry/alice29.txt"
+#Loop through all the files, just change to the correct dir
+dir = "cantrbry/" #cantrbry/ , large/
+for file in os.listdir(dir[:-1]):
+
+    proba_dict = joint_entropy(0,dir+file) 
 
     codeword_dict = proba_dict
     list = []
@@ -133,7 +135,7 @@ for file in os.listdir("cantrbry"): #cantrbry large
         pad = 0
         while bitstream_len%8 != 0:
             o.write("0")
-            print("pad")
+            #print("pad")
             pad += 1
             bitstream_len += 1
 
