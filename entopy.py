@@ -49,17 +49,21 @@ def calc(mem,filename):
 
 
     print(filename)
-    print("Memory (i) \t", "Entropy H(X_n, X_n+1,.....,X_n+i) \t", "Entropy H(X_n|X_n-1,.....,X_n-i)")
+    size = os.path.getsize(filename)
+    size_bits = size*8
+    #size_compressed = size*Entropy_joint[i]
+    print("Memory (i) \t", "Entropy H(X_n, X_n+1,.....,X_n+i) \t", "Entropy H(X_n|X_n-1,.....,X_n-i) \t", "Max Compression Ratio")
     #print("")
     for i in range(0,mem+1):
-        print("\t{} \t {} \t \t \t {}".format(i, Entropy_joint[i], Entropy_conditional[i-1] if i>0  else Entropy_joint[i]))
+        size_compressed = size*(Entropy_conditional[i-1] if i>0  else Entropy_joint[i])
+        print("\t{} \t {} \t \t \t {} \t \t \t {}".format(i, Entropy_joint[i], Entropy_conditional[i-1] if i>0  else Entropy_joint[i], size_compressed/size_bits))
         #print(i, Entropy_joint[i], Entropy_conditional[i-1])
     #print("")
     print("------------------------------------------------------------------------------------------------------------------------------------------------")
 
 #----------------------------------------------------
 
-mem = 0 #Choose memory for the entropy
+mem = 3 #Choose memory for the entropy
 
 #loop runt alla filer
 for filename in os.listdir("cantrbry"):
