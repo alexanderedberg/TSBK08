@@ -44,7 +44,7 @@ def calc(mem,filename):
         Entropy_joint.append(joint_entropy(mem,filename))
 
     Entropy_conditional = []
-    for i in range (0,mem): #for i in range (0,mem-1)
+    for i in range (0,mem):
         Entropy_conditional.append(Entropy_joint[i+1]-Entropy_joint[i])
 
 
@@ -63,7 +63,7 @@ def calc(mem,filename):
 
 #----------------------------------------------------
 
-mem = 3 #Choose memory for the entropy
+mem = 2 #Choose memory for the entropy
 
 #loop runt alla filer
 for filename in os.listdir("cantrbry"):

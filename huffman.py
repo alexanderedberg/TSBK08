@@ -139,7 +139,7 @@ for file in os.listdir(dir[:-1]):
             pad += 1
             bitstream_len += 1
 
-        #Write another 8-bits to know how much padding was added, when decompressing read the last 8-bits and remove 8+pad
+        #Write another 8-bits to know how much padding was added, when decompressing read the last 8-bits and remove 8+pad bits
         o.write('{0:08b}'.format(pad))
                 
         #Start reading 8bits at a time
