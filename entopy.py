@@ -63,7 +63,7 @@ def calc(mem,filename):
 
 #----------------------------------------------------
 
-mem = 2 #Choose memory for the entropy
+mem = 5 #Choose memory for the entropy
 
 #loop runt alla filer
 for filename in os.listdir("cantrbry"):
