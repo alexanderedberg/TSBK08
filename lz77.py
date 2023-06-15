@@ -8,8 +8,8 @@ search_buffer_size = (2**16)
 look_ahead_buffer_size = (2**8)
 
 
-#buffer = queue.Queue(search_buffer_size + look_ahead_buffer_size)
-buffer = [None] * (search_buffer_size + look_ahead_buffer_size)
+buffer = queue.Queue(search_buffer_size + look_ahead_buffer_size)
+#buffer = [None] * (search_buffer_size + look_ahead_buffer_size)
 
 #print(file)
 
@@ -27,10 +27,35 @@ with open(file,"rb") as f:
         if not char:
             break
 
-    #print(data_array[::-1])    
-    #fill look-ahead buffer
+#print(data_array[::-1])
+ 
 
-    buffer[0:look_ahead_buffer_size] = data_array[0:look_ahead_buffer_size][::-1]
+#fill look-ahead buffer
+
+for i in range (0,look_ahead_buffer_size):
+
+    buffer.put(data_array[i])
+
+
+
+
+#buffer[0:look_ahead_buffer_size-1] = data_array[0:look_ahead_buffer_size-1][::-1]
+
+#print(data_array[0:10])
+#print(buffer[245:256])
+
+print(buffer.queue[0])
+#print(buffer.get())
+#print(buffer.queue)
+#data_array_index = look_ahead_buffer_size-1
+
+
+
+#print(buffer[245:256])
+
+#while index < len(data_array): #kanske =
+
+    
 
     
 
@@ -58,6 +83,3 @@ with open(file,"rb") as f:
     #
     
     #print(byte_array[32])
-
-print(data_array[0:11])
-print(buffer[245:256])
