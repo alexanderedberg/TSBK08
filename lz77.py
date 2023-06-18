@@ -4,8 +4,8 @@ import queue
 
 file = "cantrbry/alice29.txt"
 
-search_buffer_size = (2**16)
-look_ahead_buffer_size = (2**8)
+search_buffer_size = (2**15) #2**16
+look_ahead_buffer_size = (2**7) #2**8
 
 
 #buffer = queue.Queue(search_buffer_size + look_ahead_buffer_size)
@@ -35,7 +35,7 @@ codeword_array = []
 search_index = 0
 i = 0
 print(len(data_array))
-while i < 100: #len(data_array): #len(data_array):
+while i < 40: #len(data_array): #len(data_array):
     #print("hello this is run nummber : " + str(i))
     #look at symol on pos i, match it to symol to the left (so i - x), where x is capped at the size of the search buffer. (i+y) y = look-ahead size is the cap for lookahead buffer
     #data_array[i]
@@ -45,8 +45,9 @@ while i < 100: #len(data_array): #len(data_array):
     match = ()
     best_match = ()
     l = 0
-    for j in range(search_index,0,-1):
-        #print(j)
+    j = search_index
+    while j > 0:#for j in range(search_index,0,-1): #can I move j -l steps if match was found???
+        print(j)
 
         if data_array[i] == data_array[i-j]: #if match with ONE symbol is found
 
@@ -82,7 +83,10 @@ while i < 100: #len(data_array): #len(data_array):
         elif j == 1:
             codeword_array.append(best_match)
             #print("vi hittade match")
-            #print(best_match)
+            #if best_match[1] > 15:
+                #print(best_match[1])
+
+        j -= l+1
 
         #UPDATE SEARCH INDEX WHERE??? searcg_index = l, ty allt kommer med i loopen
 
@@ -90,6 +94,10 @@ while i < 100: #len(data_array): #len(data_array):
         #data_array[]
 
     search_index += l+1
+
+    if search_index > search_buffer_size:
+        search_index = search_buffer_size
+
     #print(search_index)
 
     #if #matched symbols is 0, i += 1
@@ -97,7 +105,7 @@ while i < 100: #len(data_array): #len(data_array):
     #else # i = matched symbols (l) + 1
     i += l+1
 
-print(codeword_array)
+#print(codeword_array)
 #fill look-ahead buffer
 
 #for i in range (0,look_ahead_buffer_size):
