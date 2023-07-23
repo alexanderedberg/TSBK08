@@ -4,7 +4,7 @@ import queue
 
 file = "cantrbry/alice29.txt"
 
-search_buffer_size = (2**15) #2**16
+search_buffer_size = (2**11) #2**16
 look_ahead_buffer_size = (2**7) #2**8
 
 
@@ -35,7 +35,7 @@ codeword_array = []
 search_index = 0
 i = 0
 print(len(data_array))
-while i < 40: #len(data_array): #len(data_array):
+while i < len(data_array): #len(data_array):
     #print("hello this is run nummber : " + str(i))
     #look at symol on pos i, match it to symol to the left (so i - x), where x is capped at the size of the search buffer. (i+y) y = look-ahead size is the cap for lookahead buffer
     #data_array[i]
@@ -47,7 +47,7 @@ while i < 40: #len(data_array): #len(data_array):
     l = 0
     j = search_index
     while j > 0:#for j in range(search_index,0,-1): #can I move j -l steps if match was found???
-        print(j)
+        #print(j)
 
         if data_array[i] == data_array[i-j]: #if match with ONE symbol is found
 
