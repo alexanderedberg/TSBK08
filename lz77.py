@@ -1,12 +1,13 @@
 import os
 #import queue
 import time
+import math
 
 start_time = time.time()
-file = "cantrbry/alice29.txt" #alice29.txt
+file = "cantrbry/xargs.1" #alice29.txt
 
-search_buffer_size = (2**12) #2**16 #2**15
-look_ahead_buffer_size = (2**7) #2**8 #2**7
+search_buffer_size = (2**10) #2**16 #2**15
+look_ahead_buffer_size = (2**6) #2**8 #2**7
 
 
 #buffer = queue.Queue(search_buffer_size + look_ahead_buffer_size)
@@ -33,7 +34,7 @@ with open(file,"rb") as f:
 
 #print(data_array)
 #print(data[32])
-codeword_array = []
+tuple_array = []
 search_index = 0
 i = 0
 print(len(data_array))
@@ -88,7 +89,7 @@ while i < len(data_array): #len(data_array):
             #IF i+l == len(data_array): , kommer inte detta alltid att bli sant tillslut?
 #Ska l vara (l-1)???, nej tror inte det.
         #check if the match length l is larger than the current best match length
-        if l > best_match[1]:
+        if l >= best_match[1]:
 
             #print("IF is true, l is: " + str(l) + " ,best_match is : " + str(best_match))
             #print(look_ahead_buffer)
@@ -99,16 +100,43 @@ while i < len(data_array): #len(data_array):
         o += 1
         l = 0
 
-    codeword_array.append(best_match)
+    tuple_array.append(best_match)
     i += best_match[1] + 1
 
     #print(i)
 
-print(codeword_array)
+print(tuple_array[0:5])
 end_time = time.time()
 print(end_time-start_time)
 
     ####################################################################
+
+
+#bits required
+#
+search_buffer_bits = int(math.log2(search_buffer_size))
+look_ahead_buffer_bits = int(math.log2(look_ahead_buffer_size))
+
+code_test = tuple_array[0:10]
+
+alphabet_bits = math.ceil(math.log2(len(set(data_array))))
+
+print(search_buffer_bits)
+print(look_ahead_buffer_bits)
+#print(code_test)
+print(alphabet_bits)
+
+#print(code_test)
+
+for i in code_test: #tuple_array
+    print(f'{i[0]:0{search_buffer_bits}b}')
+    print(f'{i[1]:0{look_ahead_buffer_bits}b}')
+    #print(f'{i[2]:0{alphabet_bits}b}')
+
+    #need to create codewords for the alphabet
+
+
+
 """
     while search_index > 0:#for j in range(search_index,0,-1): #can I move j -l steps if match was found???
         #print(j)
