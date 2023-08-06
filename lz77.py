@@ -2,12 +2,14 @@ import os
 #import queue
 import time
 import math
+from collections import Counter
 
 start_time = time.time()
-file = "cantrbry/xargs.1" #alice29.txt
+dir = "cantrbry/"
+file = "alice29.txt" #alice29.txt #xargs.1
 
-search_buffer_size = (2**10) #2**16 #2**15
-look_ahead_buffer_size = (2**6) #2**8 #2**7
+search_buffer_size = (2**12) #2**16 #2**15
+look_ahead_buffer_size = (2**7) #2**8 #2**7
 
 
 #buffer = queue.Queue(search_buffer_size + look_ahead_buffer_size)
@@ -15,7 +17,7 @@ look_ahead_buffer_size = (2**6) #2**8 #2**7
 
 #print(file)
 
-with open(file,"rb") as f:
+with open(dir+file,"rb") as f:
     #data = f.read() #bytearray(f.read())
 
     data_array = []
@@ -117,7 +119,7 @@ print(end_time-start_time)
 search_buffer_bits = int(math.log2(search_buffer_size))
 look_ahead_buffer_bits = int(math.log2(look_ahead_buffer_size))
 
-code_test = tuple_array[0:10]
+#code_test = tuple_array[0:10]
 
 alphabet_bits = math.ceil(math.log2(len(set(data_array))))
 
@@ -128,12 +130,59 @@ print(alphabet_bits)
 
 #print(code_test)
 
-for i in code_test: #tuple_array
-    print(f'{i[0]:0{search_buffer_bits}b}')
-    print(f'{i[1]:0{look_ahead_buffer_bits}b}')
-    #print(f'{i[2]:0{alphabet_bits}b}')
+#Create dict with all of the symbols in alphabet
+codeword_dict = Counter(data_array)
+print(len(codeword_dict))
 
-    #need to create codewords for the alphabet
+#Give each symbol in alphabet its own codeword
+count = 0
+for key in codeword_dict:
+    codeword_dict[key] = count
+    count += 1
+
+#Write the tuples in binary to text file.
+with open("temp","w") as o:
+
+    for i in tuple_array: #tuple_array
+        print(f'{i[0]:0{search_buffer_bits}b}')
+        print(f'{i[1]:0{look_ahead_buffer_bits}b}')
+        print(f'{codeword_dict[i[2]]:0{alphabet_bits}b}')
+
+        o.write(f'{i[0]:0{search_buffer_bits}b}' + f'{i[1]:0{look_ahead_buffer_bits}b}' + f'{codeword_dict[i[2]]:0{alphabet_bits}b}')
+
+#pad the file with 0 so that the number of bits are divisible by 8, after that read the file with 8bits at a time, convert the 8bit representation to an int and then
+    #convert that to byte and write.
+    with open("temp","r+") as o, open("compress_lz77/" + file + "_compressed","wb") as output: 
+
+        bitstream = o.read()
+        bitstream_len = len(bitstream)
+
+        #pad with 0's
+        pad = 0
+        while bitstream_len%8 != 0:
+            o.write("0")
+            #print("pad")
+            pad += 1
+            bitstream_len += 1
+
+        #Write another 8-bits to know how much padding was added, when decompressing read the last 8-bits and remove 8+pad bits
+        o.write('{0:08b}'.format(pad))
+                
+        #Start reading 8bits at a time
+        o.seek(0)
+        byte_array = bytearray()
+        while True:
+            bits_8 = o.read(8)
+
+            if not bits_8:
+                break
+            
+            to_int = int(bits_8,2)
+            byte_array.append(to_int)
+        
+        output.write(byte_array)
+
+    
 
 
 
