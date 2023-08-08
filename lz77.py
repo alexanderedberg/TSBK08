@@ -6,7 +6,7 @@ from collections import Counter
 
 start_time = time.time()
 dir = "cantrbry/"
-file = "xargs.1" #alice29.txt #xargs.1
+file = "alice29.txt" #alice29.txt #xargs.1
 
 search_buffer_size = (2**10) #2**16 #2**15
 look_ahead_buffer_size = (2**6) #2**8 #2**7
@@ -178,7 +178,12 @@ with open("temp","r+") as o, open("compress_lz77/" + file + "_compressed","wb") 
         
     output.write(byte_array)
 
+#
 #decode
+#
+
+
+#Start with going from bytes back to binary
 with open("compress_lz77/" + file + "_compressed","rb") as f , open("binary","w") as o:
 
     #read each byte, convert to binary and write to new file
@@ -195,6 +200,34 @@ with open("compress_lz77/" + file + "_compressed","rb") as f , open("binary","w"
         
     string = string[:-pad_num]
     o.write(string)
+
+#From binary to tuples
+
+key_list = list(codeword_dict.keys())
+val_list = list(codeword_dict.values())
+#print(codeword_dict)
+#print(val_list[0:5])
+ 
+tuple_array_decode = []
+
+with open("binary","r+") as f:
+
+    while True:
+        offset_bin = f.read(search_buffer_bits)
+        if not offset_bin:
+            break
+        
+        #print("HELLLLOOO")
+        offset = int(offset_bin,2)
+        length = int(f.read(look_ahead_buffer_bits),2)
+        #char = f.read(alphabet_bits)
+        dict_index = val_list.index(int(f.read(alphabet_bits),2))
+        char = key_list[dict_index]
+
+        tuple_array_decode.append((offset, length, char))
+
+print(tuple_array[0:5])
+print(tuple_array_decode[0:5])
 
 
 
