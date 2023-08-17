@@ -94,7 +94,7 @@ while i < len(data_array): #len(data_array):
             try:
                 best_match = (o,l,look_ahead_buffer[l]) #detta blir fel?? ska nog vara look_ahead_buffer[l+1], nej det blir nog rätt
             except IndexError:
-                best_match = (o,0,look_ahead_buffer[l-1])
+                best_match = (o,l,look_ahead_buffer[l-1]) ## vad ska l vara???
         o += 1
         l = 0
 
@@ -210,7 +210,7 @@ val_list = list(codeword_dict.values())
  
 tuple_array_decode = []
 
-with open("binary","r+") as f:
+with open("binary","r") as f:
 
     while True:
         offset_bin = f.read(search_buffer_bits)
@@ -226,9 +226,49 @@ with open("binary","r+") as f:
 
         tuple_array_decode.append((offset, length, char))
 
-print(tuple_array[0:5])
-print(tuple_array_decode[0:5])
+#print(tuple_array[0:20])
+print(tuple_array_decode[0:20])
 
+
+
+with open("decompress_lz77/" + file + "_decompressed","ab+") as o:
+
+
+    for tuple in tuple_array_decode:
+
+        if tuple[1] == 0:
+
+            o.write(tuple[2])
+            
+
+        else:
+            
+            o.seek(-(tuple[0]+1),2)
+
+            for i in range(1,tuple[1]+1):
+
+                
+                read = o.read(1)
+
+                #read = o.read(1)
+                #print(str(read) + " " +str(i))
+
+                #print(read)
+                o.write(read)
+                o.seek(-(tuple[0]+1),2)
+
+
+
+
+            #print(test)
+
+
+            #o.write(tuple[2])
+            #tuple[1]
+            #tuple[2]
+            #print(tuple[0])
+            #o.seek(0,2)
+            o.write(tuple[2])  #o.write(test + tuple[2]) 
 
 
     
