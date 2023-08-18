@@ -13,12 +13,14 @@ def joint_entropy(mem,file):
 
         list = [] #to store each k-tuple in, k is mem+1 in size
 
-        for i in range(mem,nr_symbols):
+        for i in range(mem,nr_symbols+1):
             list.append(file_data[i-mem:i+1]) #add each k-tuple to the list
 
 
         freq = Counter(list) #count frequecy for each k-tuple
         p = {} #probability
+
+        #print(freq)
 
         #Find probability for each k-tuple 
         for key in freq:
@@ -84,7 +86,7 @@ class Nodes:
 dir = "cantrbry/" #cantrbry/ , large/
 for file in os.listdir(dir[:-1]):
 
-    proba_dict = joint_entropy(0,dir+file) 
+    proba_dict = joint_entropy(2,dir+file) 
 
     codeword_dict = proba_dict
     list = []
@@ -116,7 +118,7 @@ for file in os.listdir(dir[:-1]):
     with open(dir+file,"rb") as f , open("temp","w") as o:
 
         while True:
-            char = f.read(1)
+            char = f.read(3)
             if not char:
                 break
             
