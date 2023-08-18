@@ -78,7 +78,9 @@ class Nodes:
                 if char == "1":
                     self = self.right
 
+#
 #Loop through all the files, just change to the correct dir
+#
 dir = "cantrbry/" #cantrbry/ , large/
 for file in os.listdir(dir[:-1]):
 
