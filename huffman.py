@@ -13,7 +13,7 @@ def joint_entropy(mem,file):
 
         list = [] #to store each k-tuple in, k is mem+1 in size
 
-        for i in range(mem,nr_symbols+1):
+        for i in range(mem,nr_symbols):
             list.append(file_data[i-mem:i+1]) #add each k-tuple to the list
 
 
@@ -26,10 +26,33 @@ def joint_entropy(mem,file):
         for key in freq:
             #print(key, '->', freq[key])
 
-            p[key] = freq[key]/(nr_symbols-mem)
+            p[key] = freq[key]/((nr_symbols/(mem+1)))
 
 
         return p
+
+################################################################################################################
+#
+#                                           EXPERMINETE
+#
+################################################################################################################
+"""        
+        #if mem > 0:
+        
+        mem -= 1
+        list2 = [] #to store each k-tuple in, k is mem+1 in size
+
+        for i in range(mem,nr_symbols):
+            list2.append(file_data[i-mem:i+1]) #add each k-tuple to the list
+
+
+        freq2 = Counter(list2) #count frequecy for each k-tuple
+
+
+"""
+##################################################################################################################
+
+
 
 
 class Nodes:
@@ -86,7 +109,8 @@ class Nodes:
 dir = "cantrbry/" #cantrbry/ , large/
 for file in os.listdir(dir[:-1]):
 
-    proba_dict = joint_entropy(2,dir+file) 
+    mem = 2
+    proba_dict = joint_entropy(mem,dir+file) 
 
     codeword_dict = proba_dict
     list = []
@@ -118,10 +142,17 @@ for file in os.listdir(dir[:-1]):
     with open(dir+file,"rb") as f , open("temp","w") as o:
 
         while True:
-            char = f.read(3)
+            char = f.read(mem+1)
             if not char:
                 break
-            
+            elif len(char) < mem+1:
+                f.seek(-(mem+1),2)
+                char = f.read(mem+1)
+                #print("hejhej")
+                #print(char)
+
+
+            #print(char)
             o.write(codeword_dict[char])
 
     #print(char)

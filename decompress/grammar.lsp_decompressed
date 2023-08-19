@@ -91,4 +91,4 @@
    #'(lambda (s)
        (format t "~2&>>> ~(~{~a ~}~)~%" s)
        (write (second (parse s)) :pretty t))
-   *sentences*))
+   *sentences*))))
