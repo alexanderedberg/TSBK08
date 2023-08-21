@@ -3,19 +3,20 @@ import time
 import math
 from collections import Counter
 
-start_time = time.time()
+
 #dir = "cantrbry/"
 #file = "alice29.txt" #alice29.txt #xargs.1
 
 search_buffer_size = (2**10) #2**16 #2**15
 look_ahead_buffer_size = (2**6) #2**8 #2**7
 
+dir = "cantrbry/" #cantrbry/ , large/
 
 
-dir = "large/" #cantrbry/ , large/
+
 #file= "asyoulik.txt"
 for file in os.listdir(dir[:-1]): #dir[:-1]
-
+    start_time = time.time()
 
     with open(dir+file,"rb") as f:
 
@@ -34,8 +35,8 @@ for file in os.listdir(dir[:-1]): #dir[:-1]
     search_index = 0
     i = 0
 
-    print(len(data_array))
-    print(data_array[0:5])
+    #print(len(data_array))
+    #print(data_array[0:5])
 
     while i < len(data_array):
 
@@ -85,8 +86,8 @@ for file in os.listdir(dir[:-1]): #dir[:-1]
 
 
     #print(tuple_array[0:5])
-    end_time = time.time()
-    print(end_time-start_time)
+    #end_time = time.time()
+    #print(end_time-start_time)
 
 
     #bits required
@@ -146,6 +147,10 @@ for file in os.listdir(dir[:-1]): #dir[:-1]
             
         output.write(byte_array)
 
+
+    end_time = time.time()
+    print("Code time: " + str(end_time-start_time) + " seconds")
+    start_time = time.time()
 
     ####
     #### decode
@@ -221,6 +226,9 @@ for file in os.listdir(dir[:-1]): #dir[:-1]
 
 
                 o.write(tuple[2])
+
+    end_time = time.time()
+    print("Decode time: " + str(end_time-start_time) + " seconds")
 
 
     print("File: " + file)

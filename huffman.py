@@ -1,5 +1,6 @@
 from collections import Counter
 import os
+import time
 
 
 def joint_entropy(mem,file):
@@ -87,7 +88,10 @@ class Nodes:
             while True:
                 char = f.read(1)
                 if not char:
-                    o.write(self.sym) #needed so that last symbol is written
+                    #o.write(self.sym) #needed so that last symbol is written
+                    nr_sym_end = -(os.path.getsize(dir+file)%(mem+1))
+
+                    o.write(self.sym[nr_sym_end:])
                     break
 
                 if self.sym is not None:
@@ -108,8 +112,10 @@ class Nodes:
 #
 dir = "cantrbry/" #cantrbry/ , large/
 for file in os.listdir(dir[:-1]):
+    start_time = time.time()
 
-    mem = 2
+    mem = 0 #choose memory here
+
     proba_dict = joint_entropy(mem,dir+file) 
 
     codeword_dict = proba_dict
@@ -192,6 +198,10 @@ for file in os.listdir(dir[:-1]):
         output.write(byte_array)
 
 
+    end_time = time.time()
+    print("Code time: " + str(end_time-start_time) + " seconds")
+    start_time = time.time()
+
 
     #decode
     with open("compress/" + file + "_compressed","rb") as f , open("binary","w") as o:
@@ -214,6 +224,9 @@ for file in os.listdir(dir[:-1]):
 
 
     node.decode_huffman(node,"binary")
+
+    end_time = time.time()
+    print("Decode time: " + str(end_time-start_time) + " seconds")
 
     print("File: " + file)
     print("Original: " + str(os.path.getsize(dir+file)) + " bytes")
