@@ -4,15 +4,18 @@ import math
 from collections import Counter
 
 
-#dir = "cantrbry/"
-#file = "alice29.txt" #alice29.txt #xargs.1
 
 search_buffer_size = (2**10) #2**16 #2**15
 look_ahead_buffer_size = (2**6) #2**8 #2**7
 
+dir = "decompress_lz77//"
+
+#Removes any files in the dir, doing this because of the use of append when decoding
+for file in os.listdir(dir[:-1]):
+    os.remove(dir+file)
+
+
 dir = "cantrbry/" #cantrbry/ , large/
-
-
 
 #file= "asyoulik.txt"
 for file in os.listdir(dir[:-1]): #dir[:-1]

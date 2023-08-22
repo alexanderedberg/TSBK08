@@ -32,28 +32,6 @@ def joint_entropy(mem,file):
 
         return p
 
-################################################################################################################
-#
-#                                           EXPERMINETE
-#
-################################################################################################################
-"""        
-        #if mem > 0:
-        
-        mem -= 1
-        list2 = [] #to store each k-tuple in, k is mem+1 in size
-
-        for i in range(mem,nr_symbols):
-            list2.append(file_data[i-mem:i+1]) #add each k-tuple to the list
-
-
-        freq2 = Counter(list2) #count frequecy for each k-tuple
-
-
-"""
-##################################################################################################################
-
-
 
 
 class Nodes:
